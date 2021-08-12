@@ -48,7 +48,7 @@ class TiktokTransformPass extends BasePass
             $context_string = $this->getContextString($dom_el);
             $instagram_script_tag = $this->getScriptTag($el, '&(*UTF8)tiktok.com/embed.js&i');
             /** @var \DOMElement $new_dom_el */
-            $el->after('<amp-tiktok width="325" height="575" data-src="6718335390845095173" layout="responsive"></amp-tiktok>');
+            $el->after('<amp-tiktok width="325" height="575" data-src="'.$shortcode.'" layout="responsive"></amp-tiktok>');
 
             $new_el = $el->next();
 
