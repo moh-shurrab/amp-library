@@ -44,7 +44,7 @@ class TiktokTransformPass extends BasePass
             if (empty($shortcode)) {
                 continue;
             }
-                
+            DEFINE('TIKTOK_EXIST', TRUE);
             $context_string = $this->getContextString($dom_el);
             $instagram_script_tag = $this->getScriptTag($el, '&(*UTF8)tiktok.com/embed.js&i');
             /** @var \DOMElement $new_dom_el */
