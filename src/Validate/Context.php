@@ -86,6 +86,7 @@ class Context
         'amp-font' => 'https://cdn.ampproject.org/v0/amp-font-0.1.js',
         'amp-iframe' => 'https://cdn.ampproject.org/v0/amp-iframe-0.1.js',
         'amp-instagram' => 'https://cdn.ampproject.org/v0/amp-instagram-0.1.js',
+        'amp-tiktok' => 'https://cdn.ampproject.org/v0/amp-tiktok-0.1.js',
         'amp-install-serviceworker' => 'https://cdn.ampproject.org/v0/amp-install-serviceworker-0.1.js',
         'amp-image-lightbox' => 'https://cdn.ampproject.org/v0/amp-image-lightbox-0.1.js',
         'amp-lightbox' => 'https://cdn.ampproject.org/v0/amp-lightbox-0.1.js',
