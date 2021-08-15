@@ -128,6 +128,10 @@ class ImgTagTransformPass extends BasePass
         $new_el = $el->prev();
         $this->setLayoutIfNoLayout($new_el, $this->getLayout($el));
         $this->addActionTaken(new ActionTakenLine('img', ActionTakenType::IMG_CONVERTED, $lineno, $context_string));
+        if($el->attr('width') <500){
+            $new_dom_el->removeAttribute('srcset');
+            $new_dom_el->removeAttribute('sizes');
+        }
         return $new_dom_el;
     }
 
@@ -139,8 +143,7 @@ class ImgTagTransformPass extends BasePass
      * @return string
      */
     protected function getLayout($el) {
-       
-        if($el->attr('width') < 500) return 'fixed';
+        if($el->attr('width') <500) return 'fixed';
         return (isset($this->options['img_max_fixed_layout_width'])
             && $this->options['img_max_fixed_layout_width'] >= $el->attr('width'))
             ? 'fixed' : 'responsive';
@@ -335,7 +338,7 @@ class ImgTagTransformPass extends BasePass
 
         $wcss = new CssLengthAndUnit($el->attr('width'), false);
         $hcss = new CssLengthAndUnit($el->attr('height'), false);
-
+            
         if ($wcss->is_set && $wcss->is_valid && $hcss->is_set && $hcss->is_valid && $wcss->unit == $hcss->unit) {
             return true;
         }
@@ -350,11 +353,19 @@ class ImgTagTransformPass extends BasePass
         } else {
             $dimensions = $this->getImageWidthHeight($src);
         }
-
+     
         if ($dimensions !== false) {
+            $ratio = $dimensions['width'] / $dimensions['height'];
+            $targetWidth = $dimensions['height'];
+            $targetHeight = $dimensions['width'];
+           if($el->attr('width') < 500){
+            $targetWidth =  (int)$el->attr('width');
+            $targetHeight = (int)$targetWidth / $ratio;
+           }
+
             $image_dimensions_cache[$src] = $dimensions;
-            $el->attr('width', $dimensions['width']);
-            $el->attr('height', $dimensions['height']);
+            $el->attr('width', $targetWidth);
+            $el->attr('height', $targetHeight);
             return true;
         } else {
             return false;
