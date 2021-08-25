@@ -54,6 +54,7 @@ class IframeDailymotionTagTransformPass extends BasePass
             if (empty($videoid)) {
                 continue;
             }
+            DEFINE('IFRAME_EXIST', TRUE);
 
             $context_string = $this->getContextString($dom_el);
 
