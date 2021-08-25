@@ -58,6 +58,7 @@ class IframeTagTransformPass extends BasePass
             if ($src === false) {
                 continue;
             }
+            DEFINE('IFRAME_EXIST', TRUE);
 
             if ($el->hasAttr('class')) {
                 $class_attr = $el->attr('class');
