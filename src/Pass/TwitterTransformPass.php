@@ -43,6 +43,7 @@ class TwitterTransformPass extends BasePass
             if (empty($tweet_id)) {
                 continue;
             }
+            DEFINE('TWITTER_EXIST', TRUE);
 
             $context_string = $this->getContextString($dom_el);
 
