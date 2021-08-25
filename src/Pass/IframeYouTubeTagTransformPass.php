@@ -56,6 +56,7 @@ class IframeYouTubeTagTransformPass extends BasePass
             if (!$this->isYouTubeIframe($el)) {
                 continue;
             }
+            DEFINE('IFRAME_EXIST', TRUE);
 
             $lineno = $this->getLineNo($dom_el);
             $context_string = $this->getContextString($dom_el);
