@@ -46,6 +46,7 @@ class InstagramTransformPass extends BasePass
             if (empty($shortcode)) {
                 continue;
             }
+            DEFINE('INSTAGRAM_EXIST', TRUE);
 
             $context_string = $this->getContextString($dom_el);
             $instagram_script_tag = $this->getScriptTag($el, '&(*UTF8)instagram\.com/.*/embeds.js&i');
