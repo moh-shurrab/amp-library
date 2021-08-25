@@ -69,6 +69,7 @@ class ObjectYouTubeTagTransformPass extends BasePass
                 if (empty($youtube_code)) {
                     continue;
                 }
+              DEFINE('YOUTUBE_EXIST', TRUE);
 
                 $el->after("<amp-youtube data-videoid=\"$youtube_code\" layout=\"responsive\"></amp-youtube>");
 
