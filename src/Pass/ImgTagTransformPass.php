@@ -128,7 +128,7 @@ class ImgTagTransformPass extends BasePass
         $new_el = $el->prev();
         $this->setLayoutIfNoLayout($new_el, $this->getLayout($el));
         $this->addActionTaken(new ActionTakenLine('img', ActionTakenType::IMG_CONVERTED, $lineno, $context_string));
-        if($el->attr('width') <601){
+        if($el->attr('width') <701){
             $new_dom_el->removeAttribute('srcset');
             $new_dom_el->removeAttribute('sizes');
         }
@@ -143,7 +143,7 @@ class ImgTagTransformPass extends BasePass
      * @return string
      */
     protected function getLayout($el) {
-        if($el->attr('width') <601) return 'fixed';
+        if($el->attr('width') <701) return 'fixed';
         return (isset($this->options['img_max_fixed_layout_width'])
             && $this->options['img_max_fixed_layout_width'] >= $el->attr('width'))
             ? 'fixed' : 'responsive';
@@ -358,7 +358,7 @@ class ImgTagTransformPass extends BasePass
             $ratio = $dimensions['width'] / $dimensions['height'];
             $targetWidth = $dimensions['height'];
             $targetHeight = $dimensions['width'];
-           if($el->attr('width') < 601){
+           if($el->attr('width') < 701){
             $targetWidth =  (int)$el->attr('width');
             $targetHeight = (int)$targetWidth / $ratio;
             if($el->attr('height') == 0 && $targetHeight == 0) $targetHeight =  $dimensions['height'];
