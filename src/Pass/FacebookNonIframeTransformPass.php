@@ -66,6 +66,7 @@ class FacebookNonIframeTransformPass extends BaseFacebookPass
             if (empty($attrs)) {
                 continue;
             }
+            DEFINE('FACEBOOK_EXIST', TRUE);
 
             $el->after('<amp-facebook layout="responsive"></amp-facebook>');
             $new_el = $el->next();
