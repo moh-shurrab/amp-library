@@ -41,6 +41,7 @@ class InstagramTransformPass extends BasePass
             /** @var \DOMElement $dom_el */
             $dom_el = $el->get(0);
             $lineno = $this->getLineNo($dom_el);
+            if($lineno==0) continue;
             list($shortcode, $url) = $this->getShortcodeAndUrl($el);
             // If we can't get the instagram shortcode, abort
             if (empty($shortcode)) {
