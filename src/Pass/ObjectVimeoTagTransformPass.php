@@ -61,6 +61,7 @@ class ObjectVimeoTagTransformPass extends BasePass
                 if (empty($vimeo_code)) {
                     continue;
                 }
+            DEFINE('VIMEO_EXIST', TRUE);
 
                 $el->after('<amp-vimeo width="16" height="9" layout="responsive" data-videoid="' . $vimeo_code . '"></amp-vimeo>');
                 $new_dom_el = $el->next()->get(0);
