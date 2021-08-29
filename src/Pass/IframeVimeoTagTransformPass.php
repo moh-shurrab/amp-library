@@ -49,7 +49,7 @@ class IframeVimeoTagTransformPass extends BasePass
             if (empty($videoid)) {
                 continue;
             }
-            DEFINE('IFRAME_EXIST', TRUE);
+            DEFINE('VIMEO_EXIST', TRUE);
 
             $context_string = $this->getContextString($dom_el);
 
