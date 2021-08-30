@@ -181,12 +181,29 @@ class ImgTagTransformPass extends BasePass
         if ($img_url === false) {
             return false;
         }
-
+        if($this->checkRemoteFile($img_url)){
         // Try obtaining image size without having to download the whole image
         $size = $this->fastimage->getImageSize($img_url);
         return $size;
+        }
+        return false;
+       
     }
 
+    function checkRemoteFile($url)
+    {
+        $timeout = 1; //timeout seconds
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        // don't download content
+        curl_setopt($ch, CURLOPT_NOBODY, 1);
+        curl_setopt($ch, CURLOPT_FAILONERROR, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+
+        return (curl_exec($ch) !== FALSE);
+    }
     /**
      * Detects if the img is a SVG. In that case we simply try to skip conversion.
      * @param \DOMElement $el
