@@ -48,7 +48,7 @@ class VideoTagTransformPass extends BasePass
 
             $lineno = $this->getLineNo($dom_el);
             $context_string = $this->getContextString($dom_el);
-
+            DEFINE('VIDEO_EXIST', TRUE);
             $new_dom_el = $this->cloneAndRenameDomElement($dom_el, 'amp-video');
             $new_el = $el->prev();
 
