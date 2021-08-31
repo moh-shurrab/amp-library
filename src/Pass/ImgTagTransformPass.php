@@ -66,6 +66,9 @@ class ImgTagTransformPass extends BasePass
         foreach ($all_a as $el) {
             /** @var \DOMElement $dom_el */
             $dom_el = $el->get(0);
+            // fix wrong img
+            $src = $dom_el->getAttribute('src');
+            if(strpos($src,'file:///') !== false) continue;
             if ($this->isSvg($dom_el)) {
                 // @TODO This should be marked as a validation warning later?
                 continue;
