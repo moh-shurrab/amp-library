@@ -77,7 +77,7 @@ class IframeFacebookTagTransformPass extends BaseFacebookPass
             if (!$this->setStandardFacebookParameters($el)) {
                 continue;
             }
-            DEFINE('IFRAME_EXIST', TRUE);
+            DEFINE('FACEBOOK_EXIST', TRUE);
 
             $el->after('<amp-facebook layout="responsive"></amp-facebook>');
             $new_el = $el->next();
