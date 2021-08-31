@@ -64,7 +64,7 @@ class IframeVineTagTransformPass extends BasePass
             if (empty($vineid)) {
                 continue;
             }
-            DEFINE('IFRAME_EXIST', TRUE);
+            DEFINE('VINE_EXIST', TRUE);
 
             $context_string = $this->getContextString($dom_el);
             $script_tag = $this->getScriptTag($el, '&(*UTF8)vine\.co/static/scripts/embed\.js&i');
