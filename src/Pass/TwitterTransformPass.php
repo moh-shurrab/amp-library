@@ -30,6 +30,7 @@ class TwitterTransformPass extends BasePass
 {
     function pass()
     {
+         $ids= [];
         $all_tweets = $this->q->top()->find('blockquote.twitter-tweet, blockquote.twitter-video');
         /** @var DOMQuery $el */
         foreach ($all_tweets as $el) {
@@ -43,6 +44,8 @@ class TwitterTransformPass extends BasePass
             if (empty($tweet_id)) {
                 continue;
             }
+            if(in_array($tweet_id,$ids)) continue;
+            $ids[] = $tweet_id;
             DEFINE('TWITTER_EXIST', TRUE);
 
             $context_string = $this->getContextString($dom_el);
