@@ -36,7 +36,7 @@ class TwitterTransformPass extends BasePass
             /** @var \DOMElement $dom_el */
             $dom_el = $el->get(0);
             $lineno = $this->getLineNo($dom_el);
-
+            if($lineno==0) continue;
             $tweet_id = $this->getTweetId($el);
             // Very important, if we didn't find a tweet id then go to next tweet
             // This could be just a simple blockquote
