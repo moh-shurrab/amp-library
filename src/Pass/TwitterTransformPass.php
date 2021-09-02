@@ -44,8 +44,7 @@ class TwitterTransformPass extends BasePass
             if (empty($tweet_id)) {
                 continue;
             }
-            if(in_array($tweet_id,$ids)) continue;
-            $ids[] = $tweet_id;
+           
             DEFINE('TWITTER_EXIST', TRUE);
 
             $context_string = $this->getContextString($dom_el);
@@ -59,7 +58,8 @@ class TwitterTransformPass extends BasePass
             $new_dom_el = $el->get(0);
 
             // Remove the blockquote, its children and the twitter script tag that follows after the blockquote
-            $el->removeChildren()->remove();
+            if($el->hasChildNodes)
+                $el->removeChildren()->remove();
             if (!empty($twitter_script_tag)) {
                 $twitter_script_tag->remove();
                 $this->addActionTaken(new ActionTakenLine('blockquote.twitter-tweet (with twitter script tag)', ActionTakenType::TWITTER_CONVERTED, $lineno, $context_string));
