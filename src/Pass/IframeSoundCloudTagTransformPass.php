@@ -55,7 +55,6 @@ class IframeSoundCloudTagTransformPass extends BasePass
             if (!$this->isSoundCloudIframe($el)) {
                 continue;
             }
-            DEFINE('SOUNDCLOUD_EXIST', TRUE);
 
             $lineno = $this->getLineNo($dom_el);
             $context_string = $this->getContextString($dom_el);
@@ -72,6 +71,9 @@ class IframeSoundCloudTagTransformPass extends BasePass
                 $class_attr = $el->attr('class');
             }
 
+           DEFINE('SOUNDCLOUD_EXIST', TRUE);
+
+            
             $tag_string = "<amp-soundcloud data-trackid=\"$track_id\" layout=\"fixed-height\" $attributes ></amp-soundcloud>";
             /** @var \DOMElement $new_dom_el */
             $el->after($tag_string);
