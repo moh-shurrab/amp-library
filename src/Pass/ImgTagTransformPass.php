@@ -146,7 +146,7 @@ class ImgTagTransformPass extends BasePass
      * @return string
      */
     protected function getLayout($el) {
-        if($el->attr('width') <961) return 'fixed';
+        //if($el->attr('width') <961) return 'fixed';
         return (isset($this->options['img_max_fixed_layout_width'])
             && $this->options['img_max_fixed_layout_width'] >= $el->attr('width'))
             ? 'fixed' : 'responsive';
