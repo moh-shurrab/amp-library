@@ -68,7 +68,7 @@ class ImgTagTransformPass extends BasePass
             $dom_el = $el->get(0);
             // fix wrong img
             $src = $dom_el->getAttribute('src');
-            if(strpos($src,'file:///') !== false) continue;
+            if (strpos($src, 'file:///') !== false) continue;
             if ($this->isSvg($dom_el)) {
                 // @TODO This should be marked as a validation warning later?
                 continue;
@@ -131,7 +131,7 @@ class ImgTagTransformPass extends BasePass
         $new_el = $el->prev();
         $this->setLayoutIfNoLayout($new_el, $this->getLayout($el));
         $this->addActionTaken(new ActionTakenLine('img', ActionTakenType::IMG_CONVERTED, $lineno, $context_string));
-        if($el->attr('width') <961){
+        if ($el->attr('width') < 961) {
             $new_dom_el->removeAttribute('srcset');
             $new_dom_el->removeAttribute('sizes');
         }
@@ -145,9 +145,10 @@ class ImgTagTransformPass extends BasePass
      * @param DOMQuery $el
      * @return string
      */
-    protected function getLayout($el) {
-        
-        if($el->attr('width') < 961) return 'fixed';
+    protected function getLayout($el)
+    {
+
+        if ($el->attr('width') < 961) return 'fixed';
         return (isset($this->options['img_max_fixed_layout_width'])
             && $this->options['img_max_fixed_layout_width'] >= $el->attr('width'))
             ? 'fixed' : 'responsive';
@@ -185,13 +186,12 @@ class ImgTagTransformPass extends BasePass
         if ($img_url === false) {
             return false;
         }
-        if($this->checkRemoteFile($img_url)){
-        // Try obtaining image size without having to download the whole image
-        $size = $this->fastimage->getImageSize($img_url);
-        return $size;
+        if ($this->checkRemoteFile($img_url)) {
+            // Try obtaining image size without having to download the whole image
+            $size = $this->fastimage->getImageSize($img_url);
+            return $size;
         }
         return false;
-       
     }
 
     function checkRemoteFile($url)
@@ -250,7 +250,7 @@ class ImgTagTransformPass extends BasePass
         }
 
         $src = trim($el->getAttribute('src'));
-        if (preg_match('/\.([a-z0-9]+)$/i', parse_url($src,PHP_URL_PATH), $match)) {
+        if (preg_match('/\.([a-z0-9]+)$/i', parse_url($src, PHP_URL_PATH), $match)) {
             if (!empty($match[1]) && in_array(strtolower($match[1]), $animated_type)) {
                 if ($match[1] === "gif") {
                     if ($this->isAnimatedGif($src)) {
@@ -297,7 +297,8 @@ class ImgTagTransformPass extends BasePass
      * @param  string  $filename
      * @return bool
      */
-    function isAnimatedGif($filename) {
+    function isAnimatedGif($filename)
+    {
         if (!($fh = @fopen($filename, 'rb')))
             return FALSE;
         $count = 0;
@@ -312,7 +313,7 @@ class ImgTagTransformPass extends BasePass
         while (!feof($fh) && $count < 2) {
             $chunk = fread($fh, 1024 * 100); //read 100kb at a time
             $count += preg_match_all('#\x00\x21\xF9\x04.{4}\x00(\x2C|\x21)#s', $chunk, $matches);
-       }
+        }
 
         fclose($fh);
         return $count > 1;
@@ -359,7 +360,7 @@ class ImgTagTransformPass extends BasePass
 
         $wcss = new CssLengthAndUnit($el->attr('width'), false);
         $hcss = new CssLengthAndUnit($el->attr('height'), false);
-            
+
         if ($wcss->is_set && $wcss->is_valid && $hcss->is_set && $hcss->is_valid && $wcss->unit == $hcss->unit) {
             //return true;
         }
@@ -368,24 +369,34 @@ class ImgTagTransformPass extends BasePass
         if (empty($src)) {
             return false;
         }
-        
+
         if (isset($image_dimensions_cache[$src])) {
             $dimensions = $image_dimensions_cache[$src];
         } else {
             $dimensions = $this->getImageWidthHeight($src);
         }
-     
+
         if ($dimensions !== false) {
             $ratio = $dimensions['width'] / $dimensions['height'];
-            $targetWidth = $dimensions['height'];
-            $targetHeight = $dimensions['width'];
-           if($el->attr('width') < 961){
-            $targetWidth =  (int)$el->attr('width');
-            $targetHeight = (int)$targetWidth / $ratio;
-            if($el->attr('height') == 0 && $targetHeight == 0) $targetHeight =  $dimensions['height'];
-            if($el->attr('width') == 0 ) $targetWidth =  $dimensions['width'];
-            if($targetHeight > 600) $targetHeight = "450px";
-           }
+            $targetWidth = $dimensions['width'];
+            $targetHeight = $dimensions['height'];
+            if ($el->attr('width') < 961) {
+                $targetHeight = $targetWidth  / $ratio;
+                if ((int)$el->attr('width') < $targetWidth)
+                    $targetWidth = (int)$el->attr('width');
+                if ($el->attr('height') == 0 && $targetHeight == 0) $targetHeight =  $dimensions['height'];
+                if ($el->attr('width') == 0) $targetWidth =  $dimensions['width'];
+
+                $dim = $this->calculateDimensions($el->attr('width'), $el->attr('height'), $dimensions['width'], $dimensions['height']);
+                $targetWidth = $dim['width'];
+
+                if($el->attr('width') < $targetWidth)
+                $targetWidth = $el->attr('width');
+
+                $targetHeight = $dim['height']/2;
+                if( ($targetWidth  / $ratio) < $dim['height']/2 )
+                    $targetHeight = $targetWidth  / $ratio;
+            }
 
             $image_dimensions_cache[$src] = $dimensions;
             $el->attr('width', $targetWidth);
@@ -394,5 +405,32 @@ class ImgTagTransformPass extends BasePass
         } else {
             return false;
         }
+    }
+
+    public function calculateDimensions($width, $height, $maxwidth, $maxheight)
+    {
+
+        if ($width != $height) {
+            if ($width > $height) {
+                $t_width = $maxwidth;
+                $t_height = (($t_width * $height) / $width);
+                //fix height
+                if ($t_height > $maxheight) {
+                    $t_height = $maxheight;
+                    $t_width = (($width * $t_height) / $height);
+                }
+            } else {
+                $t_height = $maxheight;
+                $t_width = (($width * $t_height) / $height);
+                //fix width
+                if ($t_width > $maxwidth) {
+                    $t_width = $maxwidth;
+                    $t_height = (($t_width * $height) / $width);
+                }
+            }
+        } else
+            $t_width = $t_height = min($maxheight, $maxwidth);
+
+        return array('height' => (int)$t_height, 'width' => (int)$t_width);
     }
 }
