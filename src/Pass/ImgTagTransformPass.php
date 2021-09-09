@@ -146,6 +146,7 @@ class ImgTagTransformPass extends BasePass
      * @return string
      */
     protected function getLayout($el) {
+        
         if($el->attr('width') < 961) return 'fixed';
         return (isset($this->options['img_max_fixed_layout_width'])
             && $this->options['img_max_fixed_layout_width'] >= $el->attr('width'))
@@ -360,14 +361,14 @@ class ImgTagTransformPass extends BasePass
         $hcss = new CssLengthAndUnit($el->attr('height'), false);
             
         if ($wcss->is_set && $wcss->is_valid && $hcss->is_set && $hcss->is_valid && $wcss->unit == $hcss->unit) {
-            return true;
+            //return true;
         }
 
         $src = trim($el->attr('src'));
         if (empty($src)) {
             return false;
         }
-
+        
         if (isset($image_dimensions_cache[$src])) {
             $dimensions = $image_dimensions_cache[$src];
         } else {
@@ -383,7 +384,7 @@ class ImgTagTransformPass extends BasePass
             $targetHeight = (int)$targetWidth / $ratio;
             if($el->attr('height') == 0 && $targetHeight == 0) $targetHeight =  $dimensions['height'];
             if($el->attr('width') == 0 ) $targetWidth =  $dimensions['width'];
-               if($targetHeight > 600) $targetHeight = "500px";
+            if($targetHeight > 600) $targetHeight = "500px";
            }
 
             $image_dimensions_cache[$src] = $dimensions;
