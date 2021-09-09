@@ -384,7 +384,7 @@ class ImgTagTransformPass extends BasePass
             $targetHeight = (int)$targetWidth / $ratio;
             if($el->attr('height') == 0 && $targetHeight == 0) $targetHeight =  $dimensions['height'];
             if($el->attr('width') == 0 ) $targetWidth =  $dimensions['width'];
-            if($targetHeight > 600) $targetHeight = "500px";
+            if($targetHeight > 600) $targetHeight = "450px";
            }
 
             $image_dimensions_cache[$src] = $dimensions;
