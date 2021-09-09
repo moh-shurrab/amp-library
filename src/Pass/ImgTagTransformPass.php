@@ -387,15 +387,20 @@ class ImgTagTransformPass extends BasePass
                 if ($el->attr('height') == 0 && $targetHeight == 0) $targetHeight =  $dimensions['height'];
                 if ($el->attr('width') == 0) $targetWidth =  $dimensions['width'];
 
-                $dim = $this->calculateDimensions($el->attr('width'), $el->attr('height'), $dimensions['width'], $dimensions['height']);
+                $w = ($el->attr('width'))?$el->attr('width') : $dimensions['width'];
+                $h = ($el->attr('height'))?$el->attr('height') : $dimensions['height'];
+                $dim = $this->calculateDimensions($w, $h, $dimensions['width'], $dimensions['height']);
                 $targetWidth = $dim['width'];
 
-                if($el->attr('width') < $targetWidth)
-                $targetWidth = $el->attr('width');
-
-                $targetHeight = $dim['height']/2;
-                if( ($targetWidth  / $ratio) < $dim['height']/2 )
-                    $targetHeight = $targetWidth  / $ratio;
+                if((int)$el->attr('width') >0 && (int)$el->attr('width') < $targetWidth)
+                    $targetWidth = $el->attr('width');
+                
+                    $targetHeight = $dim['height'];
+                if($dim['height'] > 700 ){
+                    $targetHeight = $dim['height']/2;
+                    if( ($targetWidth  / $ratio) < $dim['height']/2 )
+                        $targetHeight = $targetWidth  / $ratio;
+                }
             }
 
             $image_dimensions_cache[$src] = $dimensions;
