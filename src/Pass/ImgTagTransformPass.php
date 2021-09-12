@@ -397,7 +397,7 @@ class ImgTagTransformPass extends BasePass
                 
                     $targetHeight = $dim['height'];
                    if($dimensions['width'] > $dimensions['height']);
-                        $targetHeight = $dim['height']/2;
+                   $targetHeight = $targetWidth  / $ratio;
 
                 if($dim['height'] > 700 ){
                     $targetHeight = $dim['height']/2;
